@@ -1,0 +1,40 @@
+<html>
+<head>
+    <title>FastAPI bitly</title>
+</head>
+<body>
+<div style="  margin: auto;
+  width: 50%;
+  border: 3px solid green;
+  padding: 10px;">
+<h1>My URL shortener!</h1>
+<form method="POST" action="/">
+<input size="50px" name="link" />
+<input type="submit" value="shorten!"/>
+</form>
+{% if shortlink %}
+<h2>
+the link
+  is now at <a href="{{shortlink}}">{{shortlink}}</a> 
+</h2>
+{% endif %}
+<form action="/random">
+<button type="submit">Random</button>
+</form>
+</div>
+{% if no_links %}
+<div style="margin: auto;
+width: 50%;
+border: 3px solid red;
+color:red;
+padding: 10px;">
+ 
+<h2>
+There are no links yet
+</h2>
+</div>
+{% endif %}
+
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+version: "3.4"
+
+services:
+  bitly:
+    build: bitly
+    image: bitly
+    restart: "no"
+    volumes:
+      - ./bitly/:/app
+    ports:
+      - 7777:7777
+    depends_on:
+      - database
+      - flyway
+    env_file:
+      - project.env
+
+  web:
+    build: 
+      context: ./expressApp
+      target: dev
+    volumes:
+      - ./expressApp/:/app
+    command: npm run start
+    ports:
+      - "8000:8000"
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - database
+      - flyway
+    env_file:
+      - project.env
+  fastapi:
+    build: fastapi
+    image: fastapi
+    restart: on-failure
+    command: uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload
+    volumes:
+      - ./fastapi/:/app
+    ports:
+      - 5000:5000
+    depends_on:
+      - database
+      - flyway
+    environment:
+      DATABASE_URL: postgresql://dab-p1-database-d474dc5b-41ab-4675-a7f4-7f1ce5aadcc3:5432/database
+
+    env_file:
+      - project.env
+  database:
+    container_name: dab-p1-database-d474dc5b-41ab-4675-a7f4-7f1ce5aadcc3
+    image: postgres:14.1
+    restart: "no"
+    env_file:
+        - project.env
+
+  flyway:
+    image: flyway/flyway:8.4.0-alpine
+    depends_on:
+      - database
+    volumes:
+      - .:/flyway/sql
+    command: -connectRetries=60 -baselineOnMigrate=true migrate
+    env_file:
+      - project.env

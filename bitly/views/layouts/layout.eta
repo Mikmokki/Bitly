@@ -1,0 +1,8 @@
+<html>
+<head>
+    <title>Oak bitly</title>
+</head>
+<body>
+<%~ it.body %>
+</body>
+</html>

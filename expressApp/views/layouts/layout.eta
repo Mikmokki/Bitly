@@ -1,0 +1,8 @@
+<html>
+<head>
+    <title>Express bitly</title>
+</head>
+<body>
+<%~ it.body %>
+</body>
+</html>
